@@ -82,10 +82,10 @@ PNG_BTN = [
      ],
 ]
 SOURCE_BUTTONS = InlineKeyboardMarkup([[InlineKeyboardButton('sᴏᴜʀᴄᴇ', url=f"{SOURCE}")]])
-HELP_READ = "**➻ 𝗞𝘂𝗹𝗹𝗮𝗻ı𝗺 :**  \n\n/dream  𝗥ü𝘆𝗮𝗻ı𝘇 🔅\n\n/ask 𝗦𝗼𝗿𝘂𝗻𝘂𝘇 ❓\n\n/ping 𝗕𝗼𝘁𝘂𝗻 𝗦𝗮ğ𝗹ı𝗸 𝗦𝗼𝗿𝘂𝗻𝗹𝗮𝗿ı𝗻ı 𝗧𝗲𝘀𝘁 𝗘𝗱𝗶𝗻 💎"
+HELP_READ = "**➻ 𝗞𝘂𝗹𝗹𝗮𝗻ı𝗺 :**  \n\n/dream  𝗥ü𝘆𝗮𝗻ı𝘇 🔅\n\n/ask 𝗦𝗼𝗿𝘂𝗻𝘂𝘇 ❓\n\n/𝗯𝘂𝗹 𝗬𝗼𝘂𝘁𝘂𝗯𝗲 𝗠𝗽𝟯 𝗜𝗻𝗱𝗶𝗿𝗺𝗲 𝗢𝘇𝗲𝗹𝗹𝗶𝗴𝗶 🐙\n\n/ping 𝗕𝗼𝘁𝘂𝗻 𝗦𝗮ğ𝗹ı𝗸 𝗦𝗼𝗿𝘂𝗻𝗹𝗮𝗿ı𝗻ı 𝗧𝗲𝘀𝘁 𝗘𝗱𝗶𝗻 💎"
 HELP_BACK = [
      [
-           InlineKeyboardButton(text="ᴋᴀʏɴᴀᴋ ", url=f"https://github.com/zeedslowy/CerenAi"),
+           InlineKeyboardButton(text="ᴋᴀʏɴᴀᴋ ", url=f"https://github.com/zeedslowy/ThenaAi"),
            
      ],
     [
@@ -159,7 +159,7 @@ async def ping(client, message: Message):
 
 # song 
 
-@Mukesh.on_message(filters.command(["song", "music"]))
+@Mukesh.on_message(filters.command(["song", "bul"]))
 def song(client, message):
 
     message.delete()
