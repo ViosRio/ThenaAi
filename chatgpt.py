@@ -159,7 +159,7 @@ async def ping(client, message: Message):
 
 # song 
 
-@pbot.on_message(filters.command(["song", "music"]))
+@Mukesh.on_message(filters.command(["song", "music"]))
 def song(client, message):
 
     message.delete()
@@ -193,13 +193,13 @@ def song(client, message):
         )
         print(str(e))
         return
-    m.edit("» ᴅᴏᴡɴʟᴏᴀᴅɪɴɢ...\n\nᴩʟᴇᴀsᴇ ᴡᴀɪᴛ...")
+    m.edit("» İndiriliyor...")
     try:
         with yt_dlp.YoutubeDL(ydl_opts) as ydl:
             info_dict = ydl.extract_info(link, download=False)
             audio_file = ydl.prepare_filename(info_dict)
             ydl.process_info(info_dict)
-        rep = f"**ᴛɪᴛʟᴇ :** {title[:25]}\n**ᴅᴜʀᴀᴛɪᴏɴ :** `{duration}`\n**ᴠɪᴇᴡs :** `{views}`\n**ʀᴇǫᴜᴇsᴛᴇᴅ ʙʏ​ »** {chutiya}"
+        rep = f"**Başlık :** {title[:25]}\n**İzlenme :** `{duration}`\n**Süre :** `{views}`\n**Talep »** {chutiya}"
         secmul, dur, dur_arr = 1, 0, duration.split(":")
         for i in range(len(dur_arr) - 1, -1, -1):
             dur += int(dur_arr[i]) * secmul
@@ -214,7 +214,7 @@ def song(client, message):
         m.delete()
     except Exception as e:
         m.edit(
-            f"**» Başarısız"
+            f"**» Başarısız,"
         )
         print(e)
 
