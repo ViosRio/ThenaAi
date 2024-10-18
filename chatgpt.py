@@ -7,7 +7,6 @@ from pyrogram import Client, filters,enums,idle
 from pyrogram.errors import ApiIdInvalid, ApiIdPublishedFlood, AccessTokenInvalid
 from pyrogram.types import InlineKeyboardMarkup, InlineKeyboardButton, Message
 from pyrogram.enums import ChatAction, ParseMode
-import openai
 from pyrogram.types import CallbackQuery
 from config import *
 import requests
@@ -17,7 +16,6 @@ from youtube_search import YoutubeSearch
 import os,sys,re,requests
 import asyncio,time
 from random import choice
-from bardapi import Bard
 from datetime import datetime
 import logging
 
@@ -37,7 +35,7 @@ Mukesh = Client(
 START = f"""
 ๏ 𝗠𝗲𝗿𝗵𝗮𝗯𝗮 🌹
 
-𝗕𝗲𝗻 𝗦𝗲𝗻𝗶𝗻 𝗦𝗮𝗻𝗮𝗹 𝗔𝘀𝗶𝘀𝘁𝗮𝗻ı𝗻ı𝗺 𝗕𝗲𝗻𝗶𝗺𝗹𝗲 𝗦𝗼𝗵𝗯𝗲𝘁 𝗘𝘁𝗺𝗲𝘆𝗲 𝗡𝗲𝗱𝗲𝗿𝘀𝗶𝗻 💎
+HEY SENİ MÜZİK EVRENİNE IŞINLAYABİLİRİM GRUBUNA EKLEMEK İÇİN NE DURUYORSUN ?
 """
 xa = bytearray.fromhex("68 74 74 70 73 3A 2F 2F 67 69 74 68 75 62 2E 63 6F 6D 2F 4E 6F 6F 62 2D 6D 75 6B 65 73 68 2F 43 68 61 74 67 70 74 2D 62 6F 74").decode()
 SOURCE = xa
@@ -82,7 +80,7 @@ PNG_BTN = [
      ],
 ]
 SOURCE_BUTTONS = InlineKeyboardMarkup([[InlineKeyboardButton('sᴏᴜʀᴄᴇ', url=f"{SOURCE}")]])
-HELP_READ = "**➻ 𝗞𝘂𝗹𝗹𝗮𝗻ı𝗺 :**  \n\n/dream  𝗥ü𝘆𝗮𝗻ı𝘇 🔅\n\n/ask 𝗦𝗼𝗿𝘂𝗻𝘂𝘇 ❓\n\n/bul 𝗬𝗼𝘂𝘁𝘂𝗯𝗲 𝗠𝗽𝟯 𝗜𝗻𝗱𝗶𝗿𝗺𝗲 𝗢𝘇𝗲𝗹𝗹𝗶𝗴𝗶 🐙\n\n/ping 𝗕𝗼𝘁𝘂𝗻 𝗦𝗮ğ𝗹ı𝗸 𝗦𝗼𝗿𝘂𝗻𝗹𝗮𝗿ı𝗻ı 𝗧𝗲𝘀𝘁 𝗘𝗱𝗶𝗻 💎\n\nʙᴏᴛ ᴠᴇʀsɪᴏɴ ᴠ2.1"
+HELP_READ = "**➻ 𝗞𝘂𝗹𝗹𝗮𝗻ı𝗺 :**  \n\n//bul 𝗬𝗼𝘂𝘁𝘂𝗯𝗲 𝗠𝗽𝟯 𝗜𝗻𝗱𝗶𝗿𝗺𝗲 𝗢𝘇𝗲𝗹𝗹𝗶𝗴𝗶\n\n/ping 𝗕𝗼𝘁𝘂𝗻 𝗦𝗮ğ𝗹ı𝗸 𝗦𝗼𝗿𝘂𝗻𝗹𝗮𝗿ı𝗻ı 𝗧𝗲𝘀𝘁 𝗘𝗱𝗶𝗻\n\nʙᴏᴛ ᴠᴇʀsɪᴏɴ ᴠ2.1"
 HELP_BACK = [
      [
            InlineKeyboardButton(text="ᴋᴀʏɴᴀᴋ ", url=f"https://github.com/zeedslowy/ThenaAi"),
@@ -223,86 +221,6 @@ def song(client, message):
         os.remove(thumb_name)
     except Exception as e:
         print(e)
-
-#  main   
-openai.api_key = OPENAI_KEY
-@Mukesh.on_message(filters.command(["chatgpt","ai","ask"],  prefixes=["+", ".", "/", "-", "?", "$","#","&"]))
-async def chat(bot, message):
-    
-    try:
-        start_time = time.time()
-        await bot.send_chat_action(message.chat.id, ChatAction.TYPING)
-        if len(message.command) < 2:
-            await message.reply_text(
-            "𝗞𝘂𝗹𝗹𝗮𝗻ı𝗺:**\n\n`/ask ʙᴜɢüɴ ɢüɴʟᴇʀᴅᴇɴ ɴᴇᴅɪʀ ?`")
-        else:
-            a = message.text.split(' ', 1)[1]
-            MODEL = "gpt-3.5-turbo"
-            resp = openai.ChatCompletion.create(model=MODEL,messages=[{"role": "user", "content": a}],
-    temperature=0.2)
-            x=resp['choices'][0]["message"]["content"]
-            end_time = time.time()
-            telegram_ping = str(round((end_time - start_time) * 1000, 3)) + " ᴍs"
-            await message.reply_text(f"{message.from_user.first_name} 💬:\n\n {a} \n\n {BOT_NAME} \n\n {x}\n\n✨  {telegram_ping} ", parse_mode=ParseMode.MARKDOWN,reply_markup=InlineKeyboardMarkup(X))     
-    except Exception as e:
-        await message.reply_text(f"**ᴇʀʀᴏʀ: {e} ")
-
-#  bard 
-
-'''bard = Bard(token=BARD_TOKEN)   
-@Mukesh.on_message(filters.command("bard"))
-async def bard_bot(bot, message):
-    try:
-        start_time = time.time()
-        await bot.send_chat_action(message.chat.id, ChatAction.TYPING)
-        if len(message.command) < 2:
-            await message.reply_text(
-            "Example:**\n\n` /bard How r u? `")
-        else:
-            a = message.text.split(' ', 1)[1]
-            response=bard.get_answer(f"{a}")["content"]
-            await message.reply_text(f"{response}\n\n🎉ᴘᴏᴡᴇʀᴇᴅ ʙʏ @{BOT_USERNAME} ", parse_mode=ParseMode.MARKDOWN,reply_markup=InlineKeyboardMarkup(X))     
-    except Exception as e:
-        await message.reply_text(f"**ᴇʀʀᴏʀ:  {e} ")
-
-    '''
-openai.api_key = OPENAI_KEY
-@Mukesh.on_message(filters.command(["image","photo","img","dream"],  prefixes=["+", ".", "/", "-", "?", "$","#","&"] ))
-async def chat(bot, message):
-    try:
-        start_time = time.time()
-        await bot.send_chat_action(message.chat.id, ChatAction.UPLOAD_PHOTO)
-        if len(message.command) < 2:
-            await message.reply_text(
-            "**𝗞𝘂𝗹𝗹𝗮𝗻ı𝗺 :**\n\n`/dream 𝗧𝘂𝗺𝗯𝗹𝗿 𝗦𝗲𝘃𝗴𝗶𝗹𝗶𝗹𝗲𝗿 𝗚ü𝗻ü `")
-        else:
-            a = message.text.split(' ', 1)[1]
-            response= openai.Image.create(prompt=a ,n=1,size="1024x1024")
-            image_url = response['data'][0]['url']
-            end_time = time.time()
-            telegram_ping = str(round((end_time - start_time) * 1000, 3)) + " ᴍs"
-            await message.reply_photo(image_url,caption=f"✨ {telegram_ping} ",parse_mode=ParseMode.DISABLED,reply_markup=InlineKeyboardMarkup(X)) 
-    except Exception as e:
-            await message.reply_text(f"**ᴇʀʀᴏʀ: **  ` {e} `")
-openai.api_key = OPENAI_KEY
-@Mukesh.on_message(filters.command(["text","audiototext","lyrics"],  prefixes=["","+", ".", "/", "-", "?", "$","#","&"]))
-async def chat(bot, message):
-    
-    try:
-        start_time = time.time()
-        await bot.send_chat_action(message.chat.id, ChatAction.TYPING)
-        if message.reply_to_message and message.reply_to_message.media:
-            
-            m = await message.reply_to_message.download(file_name="mukesh.mp3")
-            audio_file = open(m, "rb")
-            transcript = openai.Audio.transcribe("whisper-1", audio_file)
-            x=transcript["text"]
-            end_time = time.time()
-            telegram_ping = str(round((end_time - start_time) * 1000, 3)) + " ᴍs"
-            await message.reply_text(f"`{x}` \n ✨ᴛɪᴍᴇ ᴛᴀᴋᴇɴ {telegram_ping}")     
-    except Exception as e:
-        await message.reply_text(f"**ᴇʀʀᴏʀ: **  ` {e} `")
-
 
 
 s = bytearray.fromhex("68 74 74 70 73 3A 2F 2F 67 69 74 68 75 62 2E 63 6F 6D 2F 4E 6F 6F 62 2D 6D 75 6B 65 73 68 2F 43 68 61 74 67 70 74 2D 62 6F 74").decode()
