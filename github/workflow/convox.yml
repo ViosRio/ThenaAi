@@ -1,0 +1,57 @@
+environment:
+      - COMPANY=Convox
+      - DOCS_URL
+    appSettings:
+      awsLogs:
+        cwRetention: 31
+        disableRetention: false
+    resources:
+      database:
+        type: postgres
+        options:
+          storage: 200
+      queue:
+        type: redis
+    services:
+      api:
+        annotations:
+          - test.annotation.org/value=foobar
+        build: .
+        command: bin/api
+        environment:
+          - ENCRYPTION_KEY
+        health: /check
+        internal: true
+        port: 3000
+        resources:
+          - database
+          - queue
+        termination:
+          grace: 45
+        test: make test
+        timeout: 120
+        deployment:
+          minimum: 50
+          maximum: 200
+      web:
+        build: .
+        command: bin/web
+        environment:
+          - SESSION_SECRET
+        port: 3000
+      worker:
+        build: ./worker
+        command: bin/worker
+        environment:
+          - ENCRYPTION_KEY
+        resources:
+          - database
+          - queue
+      metrics:
+        agent: true
+        image: awesome/metrics
+    timers:
+      cleanup:
+        schedule: "0 3 * * * *"
+        command: bin/cleanup
+        service: worker
